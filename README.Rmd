@@ -1,0 +1,60 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# controlcharts
+
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/StatEcon1989/controlcharts/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/StatEcon1989/controlcharts/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/StatEcon1989/controlcharts/graph/badge.svg)](https://app.codecov.io/gh/StatEcon1989/controlcharts)
+<!-- badges: end -->
+
+CURRENTLY IN DEVELOPMENT:
+Control charts allow real time testing for upwards and/or downwards shifts in a process without the need to wait for enough observations to apply tests for structural changes.
+The package allows performing these control charts fast and efficiently by using C++.
+
+## Installation
+
+You can install the development version of controlcharts from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("pak")
+pak::pak("StatEcon1989/controlcharts")
+```
+
+## Example
+
+This is a basic example which shows how you could easily apply an EWMA control chart if your data is tabulated (this example requires data.table):
+
+```{r example}
+library(controlcharts)
+# create the example data
+T <- 500L # length of the time series
+table <- data.table::data.table(X = rnorm(n = T, mean = 0.25), TIME = Sys.Date() + 1:T) # simulating the (out-of-control) data as table
+
+# parametrization of the EWMA control chart
+side <- "both"
+lambda <- 0.1
+ARL <- 250L
+
+# calculate the critical value for the control limits of the EWMA chart
+h <- calculate_control_limit_ewma(lambda = lambda, ARL = ARL, fir = TRUE, side = side,
+                                  replications = 2000L)
+# apply the EWMA and append the corresponding columns
+table[, c("z", "upper_limit", "lower_limit", "exceedance") := ewma_cc(x = X, lambda = lambda, h = h, fir = TRUE, side = side)]
+head(table)
+
+# plot the control chart
+table[, plot_ewma(.SD, dates = TIME)]
+```
