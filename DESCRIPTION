@@ -1,0 +1,21 @@
+Package: controlcharts
+Title: Fast and efficient control charts
+Version: 0.1.0
+Authors@R: 
+    person("Steffen", "Koehler", ,"steffen.koehler@rub.de", role = c("aut", "cre"))
+Description: Control charts allow real time testing for upwards and/or downwards shifts in a process without the need to wait for enough observations to apply tests for structural changes.
+    The package allows performing these control charts fast and efficiently by using C++.
+License: GPL (>= 3)
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Suggests: 
+    ggplot2 (>= 2.4.0),
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+LinkingTo: 
+    Rcpp (>= 1.0.9)
+Imports: 
+    Rcpp (>= 1.0.9)
+Depends:
+    R (>= 3.5)
