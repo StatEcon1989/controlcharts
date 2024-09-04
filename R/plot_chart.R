@@ -15,7 +15,7 @@ plot_ewma <- function(ewma_cc, dates = NULL, plot_name = "EWMA Control Chart") {
   }
   df <- data.frame(Date = dates, EWMA = ewma_cc$z, Upper = ewma_cc$upper_limit, Lower = ewma_cc$lower_limit, Exceedance = ewma_cc$exceedance)
   # create plot
-  if (requireNamespace(package = "ggplot2")) {
+  if (requireNamespace(package = "ggplot2", quietly = TRUE)) {
     p <- ggplot2::ggplot(data = df, ggplot2::aes_string(x = "Date", y = "EWMA")) +
       ggplot2::geom_line(ggplot2::aes_string(y = "EWMA")) +
       ggplot2::geom_area(ggplot2::aes_string(y = "Upper"), fill = "yellow", alpha = 0.5) +
